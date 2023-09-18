@@ -2,7 +2,7 @@ package app
 
 import (
 	"github.com/aminkhn/portfolio/config"
-	"github.com/aminkhn/portfolio/db"
+	"github.com/aminkhn/portfolio/db/cache"
 	"github.com/aminkhn/portfolio/router"
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,8 +13,9 @@ func Server() {
 	if err != nil {
 		panic(err)
 	}
-	// database & cache (Redis) connection for migrations
-	db.SetupDatabase()
+	// cache (Redis) connection
+	cache.RedisConnet()
+
 	// close cache & database connection
 	//defer db.DisconnectDatabase()
 	// new instance of Fiber framework

@@ -1,31 +1,25 @@
 package model
 
-import (
-	"time"
-
-	"gorm.io/gorm"
-)
+import "time"
 
 type Post struct {
-	gorm.Model
-	ID           int       `json:"id"`
-	Title        string    `json:"title"`
-	Text         string    `json:"text"`
-	IsPublished  bool      `json:"is_published"`
-	Created_at   time.Time `json:"created_at"`
-	Published_at time.Time `json:"published_at"`
-	Comments     []Comment
+	Id           int       `db:"id"`
+	Title        string    `db:"title"`
+	Text         string    `db:"text"`
+	IsPublished  bool      `db:"is_published"`
+	Created_at   time.Time `db:"created_at"`
+	Published_at time.Time `db:"published_at"`
 	UserID       uint
 }
 
 // every post has many comment
 type Comment struct {
-	ID           int       `json:"id" gorm:"uniqueIndex; not null;"`
-	Name         string    `json:"name"`
-	Email        string    `json:"email"`
-	Text         string    `json:"text"`
-	IsPublished  bool      `json:"is_published" gorm:"default:false"`
-	Published_at time.Time `json:"published_at"`
-	Created_at   time.Time `json:"created_at"`
+	Id           int       `db:"id"`
+	Name         string    `db:"name"`
+	Email        string    `db:"email"`
+	Text         string    `db:"text"`
+	IsPublished  bool      `db:"is_published"`
+	Published_at time.Time `db:"published_at"`
+	Created_at   time.Time `db:"created_at"`
 	PostID       uint
 }
