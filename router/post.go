@@ -6,11 +6,19 @@ import (
 )
 
 func PostRoute(app fiber.Router) {
-	p := app.Group("/post")
-	p.Get("/", handler.GetAllPosts)
-	p.Post("/", handler.CreatePost)
-	p.Get("/:id", handler.GetOnePostById)
-	p.Put("/:id", handler.UpdatePost)
-	p.Patch("/:id", handler.UpdatePost)
-	p.Delete("/:id", handler.DeletePost)
+
+	// main post operations
+	post := app.Group("/post")
+
+	post.Get("/", handler.GetAllPostsHandler)
+	post.Get("/:id", handler.GetOnePostByIdHandler)
+	post.Post("/", handler.CreatePostHandler)
+	post.Put("/:id", handler.UpdatePostHandler)
+	post.Patch("/:id", handler.UpdatePostHandler)
+	post.Delete("/:id", handler.DeletePostHandler)
+
+	// post publish operations
+	publish := app.Group("/post_publish")
+
+	publish.Get("/", handler.GetPublishedPostsHandler)
 }
