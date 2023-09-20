@@ -10,15 +10,15 @@ func UserRoute(api fiber.Router) {
 	// user group
 	u := api.Group("/user")
 	// gets all users
-	u.Get("/", handler.GetAllUsers)
+	u.Get("/", handler.GetAllUsersHandler)
 	// create new user
-	u.Post("/", handler.CreateUser)
+	u.Post("/", handler.CreateUserHandler)
 	// gets one user by id
-	u.Get("/:id", handler.GetOneUserById)
+	u.Get("/:id", handler.GetUserHandler)
 	// update user by id
-	u.Put("/:id", handler.UpdateUser)
+	u.Put("/:id", handler.UpdateUserHandler)
 	// edit user by id
-	u.Patch("/:id", handler.UpdateUser)
+	//u.Patch("/:id", handler.UpdateUserHandler)
 	// delete user by id
-	u.Delete("/:id", handler.DeleteUser)
+	u.Delete("/:id", handler.DeleteUserHandler)
 }
