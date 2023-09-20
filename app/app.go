@@ -15,10 +15,10 @@ func Server() {
 	}
 	// cache (Redis) connection
 	cache.RedisConnet()
-
-	// close cache & database connection
-	//defer db.DisconnectDatabase()
-	// new instance of Fiber framework
+	// template engine
+	//engine := html.New("./views", ".html")
+	// new instance of Fiber framework with html engine template
+	//app := fiber.New(fiber.Config{Views: engine})
 	app := fiber.New()
 	// URL routes
 	router.SetupRoutes(app)
