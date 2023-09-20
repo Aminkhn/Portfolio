@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/aminkhn/portfolio/config"
-	"github.com/aminkhn/portfolio/service"
+	"github.com/aminkhn/portfolio/logic"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
@@ -12,10 +12,10 @@ import (
 var DataBase *sqlx.DB
 
 type Queries struct {
-	*service.UserQuery
-	*service.PostQuery
-	*service.PortfolioQuery
-	*service.ManagementQuery
+	*logic.UserQuery
+	*logic.PostQuery
+	*logic.PortfolioQuery
+	*logic.ManagementQuery
 }
 
 func MysqlConnect() (*Queries, error) {
@@ -33,10 +33,10 @@ func MysqlConnect() (*Queries, error) {
 		err = fmt.Errorf("error, ping did not send to database, %w", err)
 		return nil, err
 	}
-	// service queries
+	// logic queries
 	return &Queries{
-		UserQuery: &service.UserQuery{DB: DataBase},
-		PostQuery: &service.PostQuery{DB: DataBase},
+		UserQuery: &logic.UserQuery{DB: DataBase},
+		PostQuery: &logic.PostQuery{DB: DataBase},
 	}, nil
 }
 

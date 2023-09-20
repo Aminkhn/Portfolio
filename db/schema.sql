@@ -1,4 +1,6 @@
 -- 
+CREATE DATABASE portfolio;
+USE portfolio;
 CREATE TABLE User (
     id              BIGINT  NOT NULL AUTO_INCREMENT,
     username        NVARCHAR(50)     NOT NULL,
@@ -8,9 +10,10 @@ CREATE TABLE User (
     password        NVARCHAR(100),
     role            NVARCHAR(20),
     image           TEXT,
-    phone_number    INTEGER,
+    phone_number    VARCHAR(12),
     created_at      DATETIME,
-    PRIMARY KEY (id),
+    updated_at      DATETIME,
+    PRIMARY KEY (id)
 );
 /************************************************/
 CREATE TABLE Post (
@@ -19,9 +22,10 @@ CREATE TABLE Post (
 	content            TEXT,    
 	is_published    BOOLEAN,      
 	created_at      DATETIME,
+    updated_at      DATETIME,
 	published_at    DATETIME,
 	userID          BIGINT,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
 CREATE TABLE Comment (
     id              BIGINT NOT NULL AUTO_INCREMENT,
@@ -31,17 +35,17 @@ CREATE TABLE Comment (
 	is_published    BOOLEAN,      
 	published_at    DATETIME, 
 	created_at      DATETIME, 
-	PostID          BIGINT,
+	postID          BIGINT,
     PRIMARY KEY (id),
-    FOREIGN KEY (PostID) REFERENCES Post(id),
+    FOREIGN KEY (postID) REFERENCES Post(id)
 );
 /***********************************************/
 CREATE TABLE Portfolio (
     id              BIGINT NOT NULL AUTO_INCREMENT,
-	UserID          BIGINT NOT NULL,
+	userID          BIGINT NOT NULL,
 	content         TEXT,      
     PRIMARY KEY (id),
-    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (userID) REFERENCES User(id)
 );
 CREATE TABLE Project (
     id              BIGINT NOT NULL AUTO_INCREMENT,
@@ -50,37 +54,37 @@ CREATE TABLE Project (
 	image           TEXT,  
 	is_done         BOOLEAN, 
 	created_at      DateTime,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
 CREATE TABLE Technology (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     title           NVARCHAR(100),
 	content         TEXT, 
 	image           TEXT,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
 );
 CREATE TABLE portfolio_projects (
     id              BIGINT NOT NULL AUTO_INCREMENT,
-    PortfolioID     BIGINT,
-    ProjectID       BIGINT,
+    portfolioID     BIGINT,
+    projectID       BIGINT,
     PRIMARY KEY (id),
-    FOREIGN KEY (PortfolioID) REFERENCES Portfolio(id),
-    FOREIGN KEY (ProjectID) REFERENCES Project(id),
+    FOREIGN KEY (portfolioID) REFERENCES Portfolio(id),
+    FOREIGN KEY (projectID) REFERENCES Project(id)
 );
 CREATE TABLE portfolio_techs (
     id              BIGINT NOT NULL AUTO_INCREMENT,
-    PortfolioID     BIGINT,
-    TechnologyID    BIGINT,
+    portfolioID     BIGINT,
+    technologyID    BIGINT,
     skill_level     INTEGER,
     PRIMARY KEY (id),
-    FOREIGN KEY (PortfolioID) REFERENCES Portfolio(id),
-    FOREIGN KEY (Technology) REFERENCES Technology(id),
+    FOREIGN KEY (portfolioID) REFERENCES Portfolio(id),
+    FOREIGN KEY (technologyID) REFERENCES Technology(id)
 );
 CREATE TABLE project_techs (
     id              BIGINT NOT NULL AUTO_INCREMENT,
-    ProjectID       BIGINT,
-    TechnologyID    BIGINT,
+    projectID       BIGINT,
+    technologyID    BIGINT,
     PRIMARY KEY (id),
-    FOREIGN KEY (PortfolioID) REFERENCES Portfolio(id),
-    FOREIGN KEY (Technology) REFERENCES Technology(id),
+    FOREIGN KEY (projectID) REFERENCES Project(id),
+    FOREIGN KEY (technologyID) REFERENCES Technology(id)
 );
