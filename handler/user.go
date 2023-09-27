@@ -21,7 +21,7 @@ func GetAllUsersHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to retrive data!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}
@@ -56,7 +56,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to retrive data!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}

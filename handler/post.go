@@ -21,7 +21,7 @@ func GetAllPostsHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to retrive data!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}
@@ -57,7 +57,7 @@ func CreatePostHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to retrive data!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}
@@ -194,7 +194,7 @@ func GetPublishedPostsHandler(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to retrive data!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}
@@ -203,5 +203,47 @@ func GetPublishedPostsHandler(c *fiber.Ctx) error {
 		"status":  "success",
 		"message": "success",
 		"data":    posts,
+	})
+}
+func PublishPostHandler(c *fiber.Ctx) error {
+	// database connection handler
+	database, err := sql.MysqlConnect()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "failed connecting database!",
+			"error":   err.Error(),
+		})
+	}
+	// input content handler
+	id := c.Params("id")
+	if id == "" {
+		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+			"status":  "error",
+			"message": "there is a problme with your content!",
+			"error":   "id parameter is empty!",
+		})
+	}
+	post := new(model.Post)
+	if err := c.BodyParser(post); err != nil {
+		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+			"status":  "error",
+			"message": "there is a problme with your content!",
+			"error":   err.Error(),
+		})
+	}
+	// query handler
+	err = database.PostQuery.PublishPost(*post, id) // QUERY
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Failed to retrieve data!",
+			"error":   err.Error(),
+		})
+	}
+	// Success result handler
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":  "success",
+		"message": "Post publication successfully changed!",
 	})
 }
