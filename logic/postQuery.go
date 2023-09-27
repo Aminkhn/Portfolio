@@ -20,19 +20,7 @@ func (q *PostQuery) GetAllPosts() ([]model.Post, error) {
 	if err != nil {
 		return files, err
 	}
-	return files, err
-}
-
-func (q *PostQuery) GetPublishedPosts() ([]model.Post, error) {
-
-	files := []model.Post{}
-	query := `select * from post where is_published = true`
-
-	err := q.Select(&files, query)
-	if err != nil {
-		return files, err
-	}
-	return files, err
+	return files, nil
 }
 
 func (q *PostQuery) GetOnePost(id string) (model.Post, error) {
@@ -44,7 +32,7 @@ func (q *PostQuery) GetOnePost(id string) (model.Post, error) {
 	if err != nil {
 		return file, err
 	}
-	return file, err
+	return file, nil
 }
 
 // create new user
@@ -85,7 +73,7 @@ func (q *PostQuery) UpdatePost(post model.Post, id string) error {
 
 	query := `UPDATE post
 		set 
-		title = ?, content = ?, is_published = ? updated_at = ?, published_at = ?
+		title = ?, content = ?, updated_at = ?
 		WHERE id = ?;`
 
 	if post.IsPublished {
@@ -95,9 +83,7 @@ func (q *PostQuery) UpdatePost(post model.Post, id string) error {
 	_, err := q.Exec(query,
 		post.Title,
 		post.Content,
-		post.IsPublished,
 		post.Updated_at,
-		post.Published_at,
 		id,
 	)
 	if err != nil {
@@ -112,6 +98,30 @@ func (q *PostQuery) DeletePost(id string) error {
 	query := `DELETE FROM post WHERE id = ?;`
 
 	_, err := q.Exec(query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+/***************************************************/
+func (q *PostQuery) GetPublishedPosts() ([]model.Post, error) {
+
+	files := []model.Post{}
+	query := `select * from post where is_published = true`
+
+	err := q.Select(&files, query)
+	if err != nil {
+		return files, err
+	}
+	return files, nil
+}
+func (q *PostQuery) PublishPost(post model.Post, id string) error {
+
+	query := `update post set is_published = ?, published_at = ? where id = ?`
+
+	published_at := time.Now()
+	_, err := q.Exec(query, post.IsPublished, published_at, id)
 	if err != nil {
 		return err
 	}

@@ -18,17 +18,17 @@ func (q *ManagementQuery) GetManagements() ([]model.Management, error) {
 	if err != nil {
 		return files, err
 	}
-	return files, err
+	return files, nil
 }
 
-func (q *ManagementQuery) GetManagement(id string) (model.Management, error) {
+func (q *ManagementQuery) UpdateManagement() (model.Management, error) {
 
 	file := model.Management{}
-	query := `select * from management where id=$1`
+	query := `select * from management where id = 1`
 
-	err := q.Get(&file, query, id)
+	err := q.Get(&file, query)
 	if err != nil {
 		return file, err
 	}
-	return file, err
+	return file, nil
 }
