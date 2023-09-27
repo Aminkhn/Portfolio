@@ -17,7 +17,10 @@ type env struct {
 	// Server Setting
 	AppUrl  string `mapstructure:"APP_HOST"`
 	AppPort string `mapstructure:"APP_PORT"`
+	Issuer  string `mapstructure:"ISSUER"`
 	// jwt secret
+	JBT    string `mapstructure:"JWT_BUFFER_TIME"`
+	JET    string `mapstructure:"JWT_EXPIRE_TIME"`
 	Secret string `mapstructure:"JWT_SECRET"`
 }
 
