@@ -35,8 +35,9 @@ func MysqlConnect() (*Queries, error) {
 	}
 	// logic queries
 	return &Queries{
-		UserQuery: &logic.UserQuery{DB: DataBase},
-		PostQuery: &logic.PostQuery{DB: DataBase},
+		UserQuery:      &logic.UserQuery{DB: DataBase},
+		PostQuery:      &logic.PostQuery{DB: DataBase},
+		PortfolioQuery: &logic.PortfolioQuery{DB: DataBase},
 	}, nil
 }
 

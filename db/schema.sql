@@ -1,7 +1,7 @@
 -- 
 CREATE DATABASE portfolio;
 USE portfolio;
-CREATE TABLE User (
+CREATE TABLE IF NOT EXISTS `User` (
     id              BIGINT  NOT NULL AUTO_INCREMENT,
     username        NVARCHAR(50)     NOT NULL,
     email           NVARCHAR(100)    NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE User (
     PRIMARY KEY (id)
 );
 /************************************************/
-CREATE TABLE Post (
+CREATE TABLE IF NOT EXISTS `Post` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     title           NVARCHAR(200),    
 	content            TEXT,    
@@ -27,7 +27,7 @@ CREATE TABLE Post (
 	userID          BIGINT,
     PRIMARY KEY (id)
 );
-CREATE TABLE Comment (
+CREATE TABLE IF NOT EXISTS `Comment` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     name            NVARCHAR(50),  
 	email           NVARCHAR(100),   
@@ -40,14 +40,14 @@ CREATE TABLE Comment (
     FOREIGN KEY (postID) REFERENCES Post(id)
 );
 /***********************************************/
-CREATE TABLE Portfolio (
+CREATE TABLE IF NOT EXISTS `Portfolio` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
 	userID          BIGINT NOT NULL,
 	content         TEXT,      
     PRIMARY KEY (id),
     FOREIGN KEY (userID) REFERENCES User(id)
 );
-CREATE TABLE Project (
+CREATE TABLE IF NOT EXISTS `Project` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     title           NVARCHAR(200),
 	contect         TEXT,  
@@ -56,14 +56,14 @@ CREATE TABLE Project (
 	created_at      DateTime,
     PRIMARY KEY (id)
 );
-CREATE TABLE Technology (
+CREATE TABLE IF NOT EXISTS `Technology` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     title           NVARCHAR(100),
 	content         TEXT, 
 	image           TEXT,
     PRIMARY KEY (id)
 );
-CREATE TABLE portfolio_projects (
+CREATE TABLE IF NOT EXISTS `portfolio_projects` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     portfolioID     BIGINT,
     projectID       BIGINT,
@@ -71,16 +71,15 @@ CREATE TABLE portfolio_projects (
     FOREIGN KEY (portfolioID) REFERENCES Portfolio(id),
     FOREIGN KEY (projectID) REFERENCES Project(id)
 );
-CREATE TABLE portfolio_techs (
+CREATE TABLE IF NOT EXISTS `portfolio_techs` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     portfolioID     BIGINT,
     technologyID    BIGINT,
-    skill_level     INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (portfolioID) REFERENCES Portfolio(id),
     FOREIGN KEY (technologyID) REFERENCES Technology(id)
 );
-CREATE TABLE project_techs (
+CREATE TABLE IF NOT EXISTS `project_techs` (
     id              BIGINT NOT NULL AUTO_INCREMENT,
     projectID       BIGINT,
     technologyID    BIGINT,
