@@ -1,4 +1,4 @@
-package router
+package user
 
 import (
 	"github.com/aminkhn/portfolio/handler"

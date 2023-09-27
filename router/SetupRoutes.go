@@ -2,6 +2,10 @@ package router
 
 import (
 	"github.com/aminkhn/portfolio/handler"
+	"github.com/aminkhn/portfolio/router/auth"
+	"github.com/aminkhn/portfolio/router/portfolio"
+	"github.com/aminkhn/portfolio/router/post"
+	"github.com/aminkhn/portfolio/router/user"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -29,12 +33,12 @@ func route_v1(app *fiber.App) {
 	v1.Get("/", handler.Health)
 
 	// authentication
-	AuthRoute(v1)
+	auth.AuthRoute(v1)
 
 	// routes
-	UserRoute(v1)
-	PostRoute(v1)
-	PortfolioRoute(v1)
-	//ManageRoute(v1)
+	user.UserRoute(v1)
+	post.PostRoute(v1)
+	portfolio.PortfolioRoute(v1)
+	//manage.ManageRoute(v1)
 
 }

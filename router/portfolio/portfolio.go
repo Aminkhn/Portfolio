@@ -1,4 +1,4 @@
-package router
+package portfolio
 
 import (
 	"github.com/aminkhn/portfolio/handler"

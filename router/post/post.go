@@ -1,4 +1,4 @@
-package router
+package post
 
 import (
 	"github.com/aminkhn/portfolio/handler"
@@ -13,7 +13,7 @@ func PostRoute(app fiber.Router) {
 	post.Get("/", handler.GetAllPostsHandler)
 	post.Get("/:id", handler.GetOnePostByIdHandler)
 	post.Post("/", handler.CreatePostHandler)
-	post.Put("/:id", handler.UpdatePostHandler)
+	//post.Put("/:id", handler.UpdatePostHandler)
 	post.Patch("/:id", handler.UpdatePostHandler)
 	post.Delete("/:id", handler.DeletePostHandler)
 
@@ -21,4 +21,5 @@ func PostRoute(app fiber.Router) {
 	publish := app.Group("/post_publish")
 
 	publish.Get("/", handler.GetPublishedPostsHandler)
+	publish.Patch("/:id", handler.PublishPostHandler)
 }
