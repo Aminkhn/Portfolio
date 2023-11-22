@@ -1,4 +1,4 @@
-package handler
+package serviceHandler
 
 import "github.com/gofiber/fiber/v2"
 

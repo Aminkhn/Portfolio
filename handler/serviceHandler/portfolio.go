@@ -1,4 +1,4 @@
-package handler
+package serviceHandler
 
 import (
 	"github.com/aminkhn/portfolio/db/sql"
@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetAllUsersHandler(c *fiber.Ctx) error {
+func GetAllPortfolio(c *fiber.Ctx) error {
 	// database connection handler
 	database, err := sql.MysqlConnect()
 	if err != nil {
@@ -17,7 +17,7 @@ func GetAllUsersHandler(c *fiber.Ctx) error {
 		})
 	}
 	// query handler
-	users, err := database.UserQuery.GetAllUsers()
+	portfolios, err := database.PortfolioQuery.GetAllPortolios() // QUERY
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -29,10 +29,10 @@ func GetAllUsersHandler(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
 		"message": "success",
-		"data":    users,
+		"data":    portfolios,
 	})
 }
-func CreateUserHandler(c *fiber.Ctx) error {
+func CreatePortfolio(c *fiber.Ctx) error {
 	// database connection handler
 	database, err := sql.MysqlConnect()
 	if err != nil {
@@ -43,8 +43,8 @@ func CreateUserHandler(c *fiber.Ctx) error {
 		})
 	}
 	// input content check handler
-	user := new(model.User)
-	if err := c.BodyParser(user); err != nil {
+	portfolio := new(model.Portfolio)
+	if err := c.BodyParser(portfolio); err != nil {
 		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"status":  "error",
 			"message": "there is a problme with your content!",
@@ -52,7 +52,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 		})
 	}
 	// query handler
-	err = database.UserQuery.CreateUser(*user)
+	err = database.PortfolioQuery.CreatePortfolio(*portfolio) // QUERY
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -60,13 +60,13 @@ func CreateUserHandler(c *fiber.Ctx) error {
 			"error":   err.Error(),
 		})
 	}
-	// success result handler
+	// Success result handler
 	return c.Status(fiber.StatusCreated).JSON(fiber.Map{
 		"status":  "success",
-		"message": "user created successfuly!",
+		"message": "success",
 	})
 }
-func GetUserHandler(c *fiber.Ctx) error {
+func GetPortfolioById(c *fiber.Ctx) error {
 	// database connection handler
 	database, err := sql.MysqlConnect()
 	if err != nil {
@@ -86,11 +86,11 @@ func GetUserHandler(c *fiber.Ctx) error {
 		})
 	}
 	// query handler
-	user, err := database.UserQuery.GetOneUser(id)
+	portfolio, err := database.PortfolioQuery.GetPortfolio(id) // QUERY
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to execute qurey!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}
@@ -98,16 +98,16 @@ func GetUserHandler(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
 		"message": "success",
-		"data":    user,
+		"data":    portfolio,
 	})
 }
-func GetUserByUsername(c *fiber.Ctx) error {
+func GetPortfolioByUsername(c *fiber.Ctx) error {
 	return nil
 }
-func GetUserByEmail(c *fiber.Ctx) error {
+func GetPortfolioByEmail(c *fiber.Ctx) error {
 	return nil
 }
-func UpdateUserHandler(c *fiber.Ctx) error {
+func UpdatePortfolio(c *fiber.Ctx) error {
 	// database connection handler
 	database, err := sql.MysqlConnect()
 	if err != nil {
@@ -117,17 +117,17 @@ func UpdateUserHandler(c *fiber.Ctx) error {
 			"error":   err.Error(),
 		})
 	}
-	// input content handler
+	// input content check handler
 	id := c.Params("id")
 	if id == "" {
 		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"status":  "error",
 			"message": "there is a problme with your content!",
-			"error":   "id parameter is empty!",
+			"error":   err.Error(),
 		})
 	}
-	user := new(model.User)
-	if err := c.BodyParser(user); err != nil {
+	portfolio := new(model.Portfolio)
+	if err := c.BodyParser(portfolio); err != nil {
 		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"status":  "error",
 			"message": "there is a problme with your content!",
@@ -135,21 +135,21 @@ func UpdateUserHandler(c *fiber.Ctx) error {
 		})
 	}
 	// query handler
-	err = database.UserQuery.UpdateUser(*user, id)
+	err = database.PortfolioQuery.UpdatePortfolio(*portfolio, id) // QUERY
 	if err != nil {
-		return c.Status(fiber.StatusNotModified).JSON(fiber.Map{
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "failed to execute qurey!",
+			"message": "Failed to retrieve data!",
 			"error":   err.Error(),
 		})
 	}
-	// success result handler
+	// Success result handler
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
-		"message": "user modified!",
+		"message": "success",
 	})
 }
-func DeleteUserHandler(c *fiber.Ctx) error {
+func DeletePortfolio(c *fiber.Ctx) error {
 	// database connection handler
 	database, err := sql.MysqlConnect()
 	if err != nil {
@@ -159,26 +159,35 @@ func DeleteUserHandler(c *fiber.Ctx) error {
 			"error":   err.Error(),
 		})
 	}
-	// input content handler
+	// input content check handler
 	id := c.Params("id")
 	if id == "" {
 		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
 			"status":  "error",
 			"message": "there is a problme with your content!",
-			"error":   "id parameter is empty!",
-		})
-	}
-	// query handler
-	if err := database.UserQuery.DeleteUser(id); err != nil {
-		return c.Status(fiber.StatusNotModified).JSON(fiber.Map{
-			"status":  "error",
-			"message": "failed to execute qurey!",
 			"error":   err.Error(),
 		})
 	}
-	// success result handler
+	portfolio := new(model.Portfolio)
+	if err := c.BodyParser(portfolio); err != nil {
+		return c.Status(fiber.StatusNoContent).JSON(fiber.Map{
+			"status":  "error",
+			"message": "there is a problme with your content!",
+			"error":   err.Error(),
+		})
+	}
+	// query handler
+	err = database.PortfolioQuery.DeletePortfolio(id) // QUERY
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Failed to retrieve data!",
+			"error":   err.Error(),
+		})
+	}
+	// Success result handler
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"status":  "success",
-		"message": "user deleted!",
+		"message": "success",
 	})
 }
