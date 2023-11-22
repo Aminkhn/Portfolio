@@ -1,4 +1,4 @@
-package manage
+package apiServices
 
 import "github.com/gofiber/fiber/v2"
 
